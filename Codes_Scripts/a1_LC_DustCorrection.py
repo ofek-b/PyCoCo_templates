@@ -195,7 +195,7 @@ class SNPhotometryClass():
 
 
 # If you are assuming RV = 3.1
-RV_dict = {'Ic': 3.1, 'Ic-BL': 3.1, 'Ib': 3.1, 'IIb': 3.1, 'II': 3.1, 'IIn': 3.1, 'Ia': 3.1}  # OFEK: added Ia
+RV_dict = {'Ic': 3.1, 'Ic-BL': 3.1, 'Ib': 3.1, 'Ibc': 3.1, 'IIb': 3.1, 'II': 3.1, 'IIn': 3.1, 'Ia': 3.1}  # OFEK: added Ia, Ibc
 
 # If you want to do something more sophisticated and set a different R_V for different SN types set this:
 # RV_dict = {'Ic':4.3 , 'Ic-BL':4.3, 'Ib':2.6, 'IIb':1.1, 'II':3.1, 'IIn':3.1}

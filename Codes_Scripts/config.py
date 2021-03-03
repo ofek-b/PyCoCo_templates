@@ -8,8 +8,8 @@ import pandas as pd
 import what_the_flux.what_the_flux as wtf  # noqa: F401 unused import
 
 """The Supernova"""
-SN_NAME = 'SN2003jd'
-SN_SUPYFITDIR = join(environ['HOME'], 'DropboxWIS/my_spectra_collections/Ic-BL/2003jd')  # change to folder with spectra files
+SN_NAME = 'SN2016coi'
+SN_SUPYFITDIR = join(environ['HOME'], 'DropboxWIS/my_spectra_collections/Ic-BL/2016coi')  # change to folder with spectra files
 
 # after loading photometry, right before running, fill those files:
 # a) exclude_filt = list to be loaded from join(OUTPUT_DIR, SN_NAME, 'exclude_filt')
@@ -63,6 +63,7 @@ info_file = info_objects = pd.read_csv(DATAINFO_FILEPATH, comment='#', delimiter
 info_objects.set_index('Name', drop=False, inplace=True)
 name_type = dict(zip(info_objects['Name'], info_objects['Type']))
 
+# OFEK: detected use of type (possible discrimination between "II and IIn" and rest):
 se_sne = [row.Name for i, row in info_objects.iterrows() if
           row.Type in ['IIb', 'Ib', 'Ic', 'Ic-BL', 'Ibc-pec', 'Ia']]  # OFEK: added Ia
 hydr_sne = [row.Name for i, row in info_objects.iterrows() if row.Type in ['IIn', 'II', 'IIL', 'IIP', '1987A', '87A']]

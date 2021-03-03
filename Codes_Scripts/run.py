@@ -8,6 +8,7 @@ from astropy.time import Time
 
 from Codes_Scripts.config import *
 
+fallbackepxrange = 20  # days
 
 def format_oscphot(oscphot_path):
     dfosc = pd.read_csv(oscphot_path)
@@ -18,7 +19,7 @@ def format_oscphot(oscphot_path):
     dfoscF = dfosc[dfosc['upperlimit'] != 'T']
     upperlim = min(dfoscF['time'].values)
     nondet = dfosc[(dfosc['upperlimit'] == 'T') * (dfosc['time'] < upperlim)]
-    lowerlim = max(nondet['time'].values) if not nondet.empty else upperlim - 80  # todo: don't hardcode this 80
+    lowerlim = max(nondet['time'].values) if not nondet.empty else upperlim - fallbackepxrange
     if pd.isna(info_objects.at[SN_NAME, 'MJD_exp_low']):
         info_objects.at[SN_NAME, 'MJD_exp_low'] = lowerlim
     if pd.isna(info_objects.at[SN_NAME, 'MJD_exp_up']):
@@ -74,7 +75,7 @@ def format_marshallphot(oscphot_path):
     dfoscF = dfosc[dfosc['magpsf'] <= dfosc['limmag']]
     upperlim = min(dfoscF['jdobs'].values)
     nondet = dfosc[(dfosc['magpsf'] > dfosc['limmag']) * (dfosc['jdobs'] < upperlim)]
-    lowerlim = max(nondet['jdobs'].values) if not nondet.empty else upperlim - 80  # todo: don't hardcode this 80
+    lowerlim = max(nondet['jdobs'].values) if not nondet.empty else upperlim - fallbackepxrange
     if pd.isna(info_objects.at[SN_NAME, 'MJD_exp_low']):
         info_objects.at[SN_NAME, 'MJD_exp_low'] = lowerlim
     if pd.isna(info_objects.at[SN_NAME, 'MJD_exp_up']):
@@ -142,6 +143,7 @@ def get_photometry(source):
             format_marshallphot(oscphot_path)
 
     df = pd.read_csv(photpath)
+    print('Filters obtained:')
     print(df.band.value_counts())
     # print('Have:', join('Photometry', "0_LCs_mags_raw", SN_NAME + '_mag.dat.osc'))
 

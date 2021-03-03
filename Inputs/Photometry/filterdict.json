@@ -234,9 +234,9 @@
   "g /  / CSP": "CSP_g_old",
   "i /  / CSP": "CSP_i_old",
   "u /  / CSP": "CSP_u_old",
-  "g /  / LT": "LT_g",
-  "r /  / LT": "LT_r",
-  "i /  / LT": "LT_i",
+  "g /  / LT": "LT_IOO_g",
+  "r /  / LT": "LT_IOO_r",
+  "i /  / LT": "LT_IOO_i",
   "F438W /  / HST": "-",
   "F555W /  / HST": "-",
   "F625W /  / HST": "-",
@@ -320,5 +320,7 @@
   "V /  / CfA3_4SH": "CfA34SH_V",
   "I /  / CfA3_4SH": "CfA34SH_I",
   "B /  / CfA3_4SH": "CfA34SH_B",
-  "R /  / CfA3_4SH": "CfA34SH_R"
+  "R /  / CfA3_4SH": "CfA34SH_R",
+  "z /  / LT": "LT_IOO_z",
+  "u /  / LT": "LT_IOO_u"
 }
