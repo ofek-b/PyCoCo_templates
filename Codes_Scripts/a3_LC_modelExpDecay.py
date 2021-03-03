@@ -411,7 +411,7 @@ class SNPhotometryClass():
             plt.xlabel('Phase')
             plt.legend(fontsize=13)
 
-        if (mm < mm_cob56) & (name_type[self.snname] not in ['IIP', 'IIL', 'II']) & (~fix_cobalt):
+        if (mm < mm_cob56) & (name_type[self.snname] not in ['IIP', 'IIL', 'II']) & (~fix_cobalt):  # OFEK: detected use of type (possible discrimination between II and rest)
             plt.subplot(143)
             plt.errorbar(t_lr, logf_lr - mm_cob56 * t_lr, yerr=logferr_lr, marker='.',
                          mfc='k', mec='k', color='k', linestyle='None')

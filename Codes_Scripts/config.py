@@ -63,6 +63,7 @@ info_file = info_objects = pd.read_csv(DATAINFO_FILEPATH, comment='#', delimiter
 info_objects.set_index('Name', drop=False, inplace=True)
 name_type = dict(zip(info_objects['Name'], info_objects['Type']))
 
+# OFEK: detected use of type (possible discrimination between "II and IIn" and rest):
 se_sne = [row.Name for i, row in info_objects.iterrows() if
           row.Type in ['IIb', 'Ib', 'Ic', 'Ic-BL', 'Ibc-pec', 'Ia']]  # OFEK: added Ia
 hydr_sne = [row.Name for i, row in info_objects.iterrows() if row.Type in ['IIn', 'II', 'IIL', 'IIP', '1987A', '87A']]
