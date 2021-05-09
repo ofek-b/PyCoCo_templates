@@ -1,12 +1,10 @@
-from itertools import cycle
-
 import george
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from george.kernels import Matern32Kernel
 from scipy.interpolate import griddata
-from Codes_Scripts.excludefilt import *
+
+import Codes_Scripts.excludefilt
 from Codes_Scripts.config import *
 
 mycmap = plt.cm.viridis
@@ -119,7 +117,9 @@ def make_plots(GP2DIM_Class, y_data_nonan, y_data_nonan_err, x1_data_norm, x2_da
     plt.close(fig)
 
 
-def setPRIOR(GP2DIM_Class, type_=None, PRIOR_file=None, PRIOR_folder=None):
+def setPRIOR(SN_NAME, GP2DIM_Class, type_=None, PRIOR_file=None, PRIOR_folder=None):
+    exclude_filt, Bessell_V_like, swift_V_like, Bessell_B_like, swift_B_like = Codes_Scripts.excludefilt.main(SN_NAME)
+
     norm1 = GP2DIM_Class.grid_norm_info['norm1']
     norm2 = GP2DIM_Class.grid_norm_info['norm2']
     offset = GP2DIM_Class.grid_norm_info['offset']
@@ -129,7 +129,7 @@ def setPRIOR(GP2DIM_Class, type_=None, PRIOR_file=None, PRIOR_folder=None):
     if not PRIOR_file:
         if type_ in ['II', 'IIn', 'IIP', 'IIL']:
             PRIOR_file = '/prior_Hrich.txt'
-        elif type_ in ['Ib', 'Ic', 'Ibc', 'Ic-BL', 'IcBL', 'IIb','Ia']:  # OFEK: added Ia
+        elif type_ in ['Ib', 'Ic', 'Ibc', 'Ic-BL', 'IcBL', 'IIb', 'Ia']:  # OFEK: added Ia
             PRIOR_file = '/prior_SE.txt'
         else:
             print('Specify a PRIOR please')

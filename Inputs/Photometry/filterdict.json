@@ -322,5 +322,21 @@
   "B /  / CfA3_4SH": "CfA34SH_B",
   "R /  / CfA3_4SH": "CfA34SH_R",
   "z /  / LT": "LT_IOO_z",
-  "u /  / LT": "LT_IOO_u"
+  "u /  / LT": "LT_IOO_u",
+  "r /  / Palomar 48-in": "ZTF_r",
+  "i /  / Palomar 60-in": "ZTF_i",
+  "r /  / Palomar 60-in": "ZTF_r",
+  "g /  / Palomar 60-in": "ZTF_g",
+  "B /  / Palomar 60-in": "Bessell_B",
+  "z /  / Palomar 60-in": "sdss_z",
+  "r /  / Palomar 200-in": "ZTF_r",
+  "i /  / Palomar 200-in": "ZTF_i",
+  "r /  / Keck I": "sdss_r",
+  "R /  / P48": "Bessell_R",
+  "g /  / P60": "ZTF_g",
+  "i /  / P60": "ZTF_i",
+  "r /  / P60": "ZTF_r",
+  "g /  / FTN": "sdss_g",
+  "i /  / FTN": "sdss_i",
+  "r /  / FTN": "sdss_r"
 }

@@ -25,67 +25,69 @@
 
 # In[1]:
 import json
-from Codes_Scripts.excludefilt import *
+
+import Codes_Scripts.excludefilt
 from Codes_Scripts.config import *
 
-INPUT_LC_PATH = join(PHOTOMETRY_PATH, "0_LCs_mags_raw", "%s_mag.dat") % SN_NAME
-OUTPUT_LC_PATH = join(PHOTOMETRY_PATH, "1_LCs_flux_raw", "%s.dat") % SN_NAME
-# FILTERS_PATH = join(COCO_PATH , "Inputs/Filters")
 
+def main(SN_NAME):
+    exclude_filt, Bessell_V_like, swift_V_like, Bessell_B_like, swift_B_like = Codes_Scripts.excludefilt.main(SN_NAME)
 
-with open(FILTERMAGSYS_PATH, 'r') as f:
-    magsysdict = json.load(f)
+    INPUT_LC_PATH = join(PHOTOMETRY_PATH, "0_LCs_mags_raw", "%s_mag.dat") % SN_NAME
+    OUTPUT_LC_PATH = join(PHOTOMETRY_PATH, "1_LCs_flux_raw", "%s.dat") % SN_NAME
+    # FILTERS_PATH = join(COCO_PATH , "Inputs/Filters")
 
-# In[10]:
+    with open(FILTERMAGSYS_PATH, 'r') as f:
+        magsysdict = json.load(f)
 
+    # In[10]:
 
-CSP_SNe = [] # OFEK
-# ['SN2004fe', 'SN2005bf', 'SN2006V', 'SN2007C', 'SN2007Y',
-#            'SN2009bb', 'SN2008aq', 'SN2006T', 'SN2004gq', 'SN2004gt',
-#            'SN2004gv', 'SN2006ep', 'SN2008fq', 'SN2006aa']
+    CSP_SNe = []  # OFEK
+    # ['SN2004fe', 'SN2005bf', 'SN2006V', 'SN2007C', 'SN2007Y',
+    #            'SN2009bb', 'SN2008aq', 'SN2006T', 'SN2004gq', 'SN2004gt',
+    #            'SN2004gv', 'SN2006ep', 'SN2008fq', 'SN2006aa']
 
-# In[11]:
+    # In[11]:
 
+    fout = open(OUTPUT_LC_PATH, 'w')
+    fout.write('# From Mags to Flux, not MW/Host dust corrected\n')
+    fout.close()
 
-fout = open(OUTPUT_LC_PATH, 'w')
-fout.write('# From Mags to Flux, not MW/Host dust corrected\n')
-fout.close()
+    phot_mags = pd.read_csv(INPUT_LC_PATH, comment='#')
+    filter_set = 'GeneralFilters' if SN_NAME not in CSP_SNe else 'Site3_CSP'
 
-phot_mags = pd.read_csv(INPUT_LC_PATH, comment='#')
-filter_set = 'GeneralFilters' if SN_NAME not in CSP_SNe else 'Site3_CSP'
+    fluxes = []
+    fluxes_err = []
+    filter_set_list = []
 
-fluxes = []
-fluxes_err = []
-filter_set_list = []
-
-for index, row in phot_mags.iterrows():
-    w, t = wtf.loadFilter(join(FILTERS_PATH, '%s/%s.dat') % (filter_set, row['band']))
-    # OFEK: capital is Vega, noncapital is AB
-    if row['band'] not in magsysdict:
-        letter = row['band'].split('_')[1][0]
-        if letter.islower():
-            magsysdict[row['band']] = 'AB'
+    for index, row in phot_mags.iterrows():
+        w, t = wtf.loadFilter(join(FILTERS_PATH, '%s/%s.dat') % (filter_set, row['band']))
+        # OFEK: capital is Vega, noncapital is AB
+        if row['band'] not in magsysdict:
+            letter = row['band'].split('_')[1][0]
+            if letter.islower():
+                magsysdict[row['band']] = 'AB'
+            else:
+                magsysdict[row['band']] = 'Vega'
+        magsys = magsysdict[row['band']]
+        if magsys == 'Vega':
+            band = wtf.Band_Vega(w, t)
+        elif magsys == 'AB':
+            band = wtf.Band_AB(w, t)
         else:
-            magsysdict[row['band']] = 'Vega'
-    magsys = magsysdict[row['band']]
-    if magsys == 'Vega':
-        band = wtf.Band_Vega(w, t)
-    elif magsys == 'AB':
-        band = wtf.Band_AB(w, t)
-    else:
-        raise Exception('Unknown magsystem ' + magsys)
+            raise Exception('Unknown magsystem ' + magsys)
 
-    flux_withMW = wtf.mag2flux(band, row['Mag']).value
-    flux_err_withMW = wtf.ERRmag2ERRflux(band, row['Mag'], row['Mag_err']).value
-    fluxes.append(flux_withMW)
-    fluxes_err.append(flux_err_withMW)
-    filter_set_list.append(filter_set)
+        flux_withMW = wtf.mag2flux(band, row['Mag']).value
+        flux_err_withMW = wtf.ERRmag2ERRflux(band, row['Mag'], row['Mag_err']).value
+        fluxes.append(flux_withMW)
+        fluxes_err.append(flux_err_withMW)
+        filter_set_list.append(filter_set)
 
-phot_mags['Flux'] = fluxes
-phot_mags['Flux_err'] = fluxes_err
-phot_mags['FilterSet'] = filter_set_list
-phot_mags[['MJD', 'Mag', 'Mag_err', 'Flux', 'Flux_err', 'band', 'Instr', 'FilterSet']].to_csv(OUTPUT_LC_PATH,
-                                                                                              index=False)
+    phot_mags['Flux'] = fluxes
+    phot_mags['Flux_err'] = fluxes_err
+    phot_mags['FilterSet'] = filter_set_list
+    phot_mags[['MJD', 'Mag', 'Mag_err', 'Flux', 'Flux_err', 'band', 'Instr', 'FilterSet']].to_csv(OUTPUT_LC_PATH,
+                                                                                                  index=False)
 
-with open(FILTERMAGSYS_PATH, 'w') as f:
-    json.dump(magsysdict, f, indent=2)
+    with open(FILTERMAGSYS_PATH, 'w') as f:
+        json.dump(magsysdict, f, indent=2)

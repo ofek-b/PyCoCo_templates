@@ -1,4 +1,4 @@
-This is a fork of [this repo](https://github.com/maria-vincenzi/PyCoCo_templates) by [Vincenzi et al. (2019)](https://academic.oup.com/mnras/article/489/4/5802/5572281), with interface changes.
+This is a fork of [this repo](https://github.com/maria-vincenzi/PyCoCo_templates) by [Vincenzi et al. (2019)](https://arxiv.org/abs/1908.05228), with some minor changes.
 
 This code is used in a work in progress.
 
@@ -8,7 +8,7 @@ This code is used in a work in progress.
 
 ### Build your own template: Instructions
 1. Set the variables `COCO_PATH` and `SN_NAME` in `config.py`.
-1. Automated: Run the function `get_spectroscopy` (uses spectra folder downloaded from [WISeREP](https://wiserep.weizmann.ac.il/) incl. the csv file) in `run.py`. Or (see example files for formats):
+1. Automated: Run the function `get_spectroscopy` (uses spectra folder downloaded from [WISeREP](https://wiserep.org/) incl. the csv file) in `run.py`. Or (see example files for formats):
    1. Place a file with the list of the spectra `./Inputs/Spectroscopy/1_spec_lists_original`. Place the actual files with the spectra in `./Inputs/Spectroscopy/1_spec_original`. If you want to smooth the spectra use the provided code. Otherwise, skip this and put list and spectra in the folders `./Inputs/Spectroscopy/2_spec_lists_smoothed` and `./Inputs/Spectroscopy/2_spec_smoothed`.
    1. Modify `./Inputs/SNe_info/info.dat` and add a row for each new template you want to build.
 1. Run the function `get_photometry` (downloads photometry from the [OSC](https://sne.space/)) in `run.py`. You will be prompted to input the names (without .dat) of the transmission function files (see next step) corresponding to every photometry entry form OSC. Or (see example files for formats):      
@@ -21,6 +21,6 @@ This code is used in a work in progress.
 
 All the outputs (LC fit, mangled spectra, various plots and final template) will be created in `./Outputs`.
 
-Figure 1 in [Vincenzi et al. (2019)](https://academic.oup.com/mnras/article/489/4/5802/5572281) shows a flow chart of the process where each step of the process corresponds to a script in `./Codes_Scripts`. This fork uses .py scripts instead of .ipynb notebooks.
+Figure 1 in [Vincenzi et al. (2019)](https://arxiv.org/abs/1908.05228) shows a flow chart of the process where each step of the process corresponds to a script in `./Codes_Scripts`. This fork uses .py scripts instead of .ipynb notebooks.
 
 ![Imgur](pycoco_code_structure.png)
