@@ -1,24 +1,14 @@
 from collections import defaultdict
 from itertools import cycle
-from os import environ, system
-from os.path import join, isfile
+from os import environ
+from os.path import join
 
 import pandas as pd
 
 import what_the_flux.what_the_flux as wtf  # noqa: F401 unused import
 
-"""The Supernova"""
-SN_NAME = 'SN2016coi'
-SN_SUPYFITDIR = join(environ['HOME'], 'DropboxWIS/my_spectra_collections/Ic-BL/2016coi')  # change to folder with spectra files
-
-# after loading photometry, right before running, fill those files:
-# a) exclude_filt = list to be loaded from join(OUTPUT_DIR, SN_NAME, 'exclude_filt')
-# b) 4 filters = list from join(OUTPUT_DIR, SN_NAME, 'VVBB')
-# c) fill the line corresponding to the SN in info.dat
-
-
-"""other:"""
 COCO_PATH = join(environ['HOME'], 'DropboxWIS/PyCoCo_templates/')  # chnage to source directory of this code
+SPEC_PATH = join(environ['HOME'], 'DropboxWIS/my_spectra_collections')
 
 SCRIPTS_PATH = join(COCO_PATH, 'Codes_Scripts')
 FILTER_PATH = FILTERS_PATH = join(COCO_PATH, "Inputs/Filters")
@@ -29,11 +19,6 @@ PHOTOMETRY_PATH = join(COCO_PATH, "Inputs/Photometry")
 DATALC_PATH = join(COCO_PATH, "Inputs/Photometry/4_LCs_late_extrapolated")
 
 OUTPUT_DIR = join(COCO_PATH, "Outputs")
-system('mkdir -p '+join(OUTPUT_DIR, SN_NAME))
-if not isfile(join(OUTPUT_DIR, SN_NAME, 'exclude_filt')):
-    system('touch ' +join(OUTPUT_DIR, SN_NAME, 'exclude_filt'))
-if not isfile(join(OUTPUT_DIR, SN_NAME, 'VVBB')):
-    system('touch ' +join(OUTPUT_DIR, SN_NAME, 'VVBB'))
 
 color_dict = {'Bessell_U': 'blue', 'Bessell_B': 'royalblue', 'Bessell_V': 'limegreen',
               'Bessell_R': 'red', 'Bessell_I': 'mediumvioletred',
@@ -67,3 +52,5 @@ name_type = dict(zip(info_objects['Name'], info_objects['Type']))
 se_sne = [row.Name for i, row in info_objects.iterrows() if
           row.Type in ['IIb', 'Ib', 'Ic', 'Ic-BL', 'Ibc-pec', 'Ia']]  # OFEK: added Ia
 hydr_sne = [row.Name for i, row in info_objects.iterrows() if row.Type in ['IIn', 'II', 'IIL', 'IIP', '1987A', '87A']]
+
+fallbackepxrange = 20  # days
